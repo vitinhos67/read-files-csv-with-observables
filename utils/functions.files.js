@@ -12,12 +12,12 @@ exports.ReadPathFiles = (path) => {
     })
 }
 
-exports.readFiles =  () => (source) =>
+exports.readFiles =  (path) => (source) =>
 new rxjs.Observable(observer => {
   return source.subscribe({
     next(x) {
     
-    const path = `${__dirname}/../csv/marcas`
+   
 
     const pathFile = `${path}/${x}`
     const file = fs.readFileSync(pathFile, {

@@ -14,7 +14,7 @@ const path = `${__dirname}/csv/marcas`
 
 ReadPathFiles(path)
     .pipe(
-        readFiles(),
+        readFiles(path),
         separateInArrayWords(),
         parseArray()
         )
