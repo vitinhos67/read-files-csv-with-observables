@@ -1,4 +1,3 @@
-
 const {
     readFiles,
     ReadPathFiles
@@ -6,31 +5,80 @@ const {
 
 const {
     parseArray,
-    separateInArrayWords
+    separateInArrayWords,
+    verifyTypeVehicle
 } = require('./utils/functions.data')
 
-const path = `${__dirname}/csv/marcas`
+const {
+    errorSubscribe,
+    handleError
+} = require('./utils/errors/errors.handler')
+
+const { brandModel, modelModel} = require('./database/schemas')
 
 
-ReadPathFiles(path)
+require('./database/connection')
+
+const pathBrand = `${__dirname}/csv/marcas`
+const pathModels = `${__dirname}/csv/modelos`
+
+
+
+ReadPathFiles(pathBrand)
     .pipe(
-        readFiles(path),
+        verifyTypeVehicle(),
+        readFiles(pathBrand),
         separateInArrayWords(),
         parseArray()
         )
     .subscribe({
-        next(value) {
-            console.log(value)
+        async next(x) {
+
+
+            x.data.forEach(async (element) => {
+                  await brandModel.create({
+                        brand: element[1],
+                        id: element[0],
+                        type: x.type,
+                        visited: false,
+
+                    })
+                
+                    console.log('Colections brands added..')
+            });
+
         },
-        error(err) {
-            if(err) {
-                console.log(err)
-            }
-        },
-        complete() {
-            console.log('Operation completed...')
-        }
+        error: errorSubscribe
+
     })
 
+ReadPathFiles(pathModels)
+    .pipe(
+        verifyTypeVehicle(),
+        readFiles(pathModels),
+        separateInArrayWords(),
+        parseArray()
+        )
+    .subscribe({
+        async next(x) {
 
+            x.data.forEach(async (element) => {
+                    await modelModel.create({
+                        id_brand: parseInt(element[1]),
+                        id: parseInt(element[0]),
+                        model: element[2],
+                        type: x.type,
+                        visited: false,
+                    }).catch(handleError)
+
+
+                                    
+                    console.log('Colections models added..')
+            });
+
+            
+            
+        },
+        error: errorSubscribe
+    })
 

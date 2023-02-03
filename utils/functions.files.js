@@ -19,11 +19,14 @@ new rxjs.Observable(observer => {
     
    
 
-    const pathFile = `${path}/${x}`
+    const pathFile = `${path}/${x.file}`
     const file = fs.readFileSync(pathFile, {
         encoding: 'utf-8'
     })
-    observer.next(file)
+    observer.next({
+        fileContent: file,
+        type: x.type
+    })
     },
     error(err) { observer.error(err); },
     complete() { observer.complete(); }
