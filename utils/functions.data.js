@@ -7,7 +7,6 @@ new rxjs.Observable(observer => {
         next(x) {
 
         const splitLines = x.fileContent.split('\n').map(value => value.replace('\r', ''))
-        
         observer.next({data: splitLines, type: x.type})
 
         },
@@ -23,8 +22,7 @@ new rxjs.Observable(observer => {
         next(x) {
         
         const splitLines = x.data.map(value => value.split(';'))
-        
-
+    
         observer.next({
             data: splitLines,
             type: x.type
@@ -47,7 +45,6 @@ new rxjs.Observable(observer => {
             type: regex.exec(x)[1],
             file: x
         })
-
 
         },
         error(err) { observer.error(err); },

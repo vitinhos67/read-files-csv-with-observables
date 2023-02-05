@@ -44,9 +44,10 @@ ReadPathFiles(pathBrand)
 
                     })
                 
-                    console.log('Colections brands added..')
+                    
             });
 
+            console.log(`Brands the ${x.type} added`)
         },
         error: errorSubscribe
 
@@ -73,10 +74,10 @@ ReadPathFiles(pathModels)
 
 
                                     
-                    console.log('Colections models added..')
+                    
             });
 
-            
+            console.log(`Models the ${x.type} added`)
             
         },
         error: errorSubscribe
